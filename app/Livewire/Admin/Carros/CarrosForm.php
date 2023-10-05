@@ -34,6 +34,10 @@ class CarrosForm extends Component
         //mando salvar no BD
         $carro->save();
 
+        //Vou gravar mensagem na sessão
+        //O flash é para que a mensagem seja apagada da sessão logo após ser exibida
+        session()->flash('toast', 'Carro salvo com sucesso!');
+
         //Redireciona para a lista de carros
         $this->redirect('/carros', navigate: true);
     }
