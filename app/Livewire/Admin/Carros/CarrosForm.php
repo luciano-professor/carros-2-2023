@@ -2,37 +2,28 @@
 
 namespace App\Livewire\Admin\Carros;
 
+use App\Livewire\Forms\Admin\CarrosFormObject;
 use App\Models\Car;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class CarrosForm extends Component
 {
 
-    public $placa;
-    public $modelo;
-    public $marca;
-    public $ano;
-    public $cor;
-    public $chassi;
-    public $diaria;
-    public $descricao;
+    public CarrosFormObject $form;
 
     public function salvar() {
-        //cria o objeto do modelo
-        $carro = new Car();
 
-        //copia os dados sincronazidos do formulario para o objeto
-        $carro->placa = $this->placa;
-        $carro->modelo = $this->modelo;
-        $carro->marca = $this->marca;
-        $carro->ano = $this->ano;
-        $carro->cor = $this->cor;
-        $carro->chassi = $this->chassi;
-        $carro->diaria = $this->diaria;
-        $carro->descricao = $this->descricao;
+        //Vai validar o formulário de acordo com as regras configuradas
+        //Se tiver algum erro uma exceção é lançada e esse método para de executar
+        //as mensagens de erro são enviadas automaticamente para a view
+        $this->validate();
 
-        //mando salvar no BD
-        $carro->save();
+        //usando outra forma de salvar no BD
+        //Chamado de Mass Assignment
+        Car::create(
+            $this->form->all()
+        );
 
         //Vou gravar mensagem na sessão
         //O flash é para que a mensagem seja apagada da sessão logo após ser exibida
